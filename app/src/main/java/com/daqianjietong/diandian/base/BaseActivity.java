@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
+import com.daqianjietong.diandian.App;
 import com.daqianjietong.diandian.dialog.ProDialog;
 
 import org.xutils.x;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	//	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		App.getmApp().addActivity(this);
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
 		this.setContentView(this.getLayoutId());

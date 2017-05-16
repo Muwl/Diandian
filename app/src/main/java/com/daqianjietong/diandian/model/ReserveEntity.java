@@ -12,5 +12,7 @@ public class ReserveEntity implements Serializable{
     public String r_parkname;//停车场名称
     public String r_starttime;
     public String r_endtime;
+    public String r_address;
     public String r_money;
+    public String r_type;
 }

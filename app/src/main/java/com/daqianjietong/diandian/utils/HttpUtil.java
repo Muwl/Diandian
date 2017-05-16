@@ -64,6 +64,10 @@ public class HttpUtil<T>{
                     return;
                 }
                 if (baseHttpEntity.code==RETURN_OK){
+                    if (ToosUtils.isStringEmpty(baseHttpEntity.data)){
+                        listenter.onsucess(null);
+                        return;
+                    }
                     String str=AESUtils.desEncrypt(baseHttpEntity.data).trim();
                     Log.e("--------------fanhui","***"+str);
                     listenter.onsucess((T) gson.fromJson(str,type));
@@ -251,7 +255,7 @@ public class HttpUtil<T>{
     public HttpUtil setFile(File file){
         if(file == null)
             return this;
-        params.addBodyParameter("icon",file);
+        params.addBodyParameter("file",file);
         return this;
     }
 

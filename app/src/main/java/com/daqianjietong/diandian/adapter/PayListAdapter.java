@@ -2,6 +2,7 @@ package com.daqianjietong.diandian.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.daqianjietong.diandian.R;
 import com.daqianjietong.diandian.dialog.CustomeDialog;
 import com.daqianjietong.diandian.model.PayListEntity;
+import com.daqianjietong.diandian.model.ReserveEntity;
 import com.daqianjietong.diandian.utils.TimeUtils;
 
 import java.util.List;
@@ -24,10 +26,10 @@ import butterknife.ButterKnife;
 public class PayListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<PayListEntity> entities;
+    private List<ReserveEntity> entities;
     private Handler handler;
 
-    public PayListAdapter(Context context,List<PayListEntity> entities, Handler handler) {
+    public PayListAdapter(Context context, List<ReserveEntity> entities, Handler handler) {
         this.context = context;
         this.entities=entities;
         this.handler = handler;
@@ -58,13 +60,16 @@ public class PayListAdapter extends BaseAdapter {
         }else{
             holder= (ViewHolder) convertView.getTag();
         }
-        PayListEntity payListEntity=entities.get(position);
+        ReserveEntity payListEntity=entities.get(position);
         holder.itemPaylistName.setText(payListEntity.r_parkname);
         holder.itemPlaylistTime.setText(TimeUtils.getShowTime3(payListEntity.r_starttime)+" 至 "+TimeUtils.getShowTime3(payListEntity.r_endtime));
         holder.itemPaylistPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.sendEmptyMessage(1);
+                Message message=new Message();
+                message.what=1;
+                message.arg1=position;
+                handler.sendMessage(message);
             }
         });
 

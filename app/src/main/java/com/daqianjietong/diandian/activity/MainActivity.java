@@ -1,11 +1,7 @@
 package com.daqianjietong.diandian.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,30 +14,24 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.daqianjietong.diandian.App;
 import com.daqianjietong.diandian.R;
 import com.daqianjietong.diandian.base.BaseActivity;
 import com.daqianjietong.diandian.model.PictureEntity;
-import com.daqianjietong.diandian.model.UserInfoBean;
 import com.daqianjietong.diandian.utils.Api;
 import com.daqianjietong.diandian.utils.BannerImageLoader;
 import com.daqianjietong.diandian.utils.HttpUtil;
 import com.daqianjietong.diandian.utils.SpUtil;
-import com.daqianjietong.diandian.utils.TimeUtils;
 import com.daqianjietong.diandian.utils.ToastUtil;
 import com.daqianjietong.diandian.utils.ToosUtils;
 import com.google.gson.Gson;
-import com.lzy.imagepicker.ImageDataSource;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
-import org.feezu.liuli.timeselector.TimeSelector;
-
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -66,13 +56,26 @@ public class MainActivity extends BaseActivity {
     ScrollView lvMain;
 
 
-    Handler handler=new Handler();
     private List<String> imageUrl = new ArrayList<>();
 
     private AMapLocationClient mLocationClient = null;
     private AMapLocationClientOption mLocationOption = null;
     private AMapLocation myMapLocation;
 
+    private boolean canExit = false;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 0:
+                    canExit = false;
+                    break;
+                default:
+                    break;
+            }
+
+        };
+    };
 
     @Override
     public int getLayoutId() {
@@ -236,6 +239,20 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        if (ToosUtils.isApplicationBroughtToBackground(this)) {
+            if (canExit) {
+                finish();
+                App.getmApp().exit();
+            } else {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                canExit = true;
+                handler.sendEmptyMessageDelayed(0, 2000);
+            }
+        }
+    }
 
 
     private void getPictures(){

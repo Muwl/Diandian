@@ -16,12 +16,13 @@ public class PayListEntity {
      * r_endtime : 1493548920
      * r_type : 1
      */
-    public String r_id;
+    public String reserveid;
     public String r_parknum;
     public String r_address;
     public String r_parkname;
     public String r_starttime;
     public String r_endtime;
     public String r_type;//1 预约 2租赁 3临时停车
+    public String r_money;
 
 }

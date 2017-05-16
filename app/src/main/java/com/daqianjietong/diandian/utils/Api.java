@@ -320,11 +320,11 @@ public class Api {
      * @param txt_userid
      * @param listenter
      */
-    public  void paylist(String txt_userid,HttpUtil.URLListenter<List<PayListEntity>> listenter){
+    public  void paylist(String txt_userid,HttpUtil.URLListenter<List<ReserveEntity>> listenter){
         Map<String,String> params = new HashMap<>();
         params.put("txt_userid",txt_userid);
         HttpUtil httpUtil=new HttpUtil();
-        httpUtil.doRequest(API_METHOD.POST,HOST+PAYLIST,params,listenter,new TypeToken<List<PayListEntity>>(){}.getType(),true);
+        httpUtil.doRequest(API_METHOD.POST,HOST+PAYLIST,params,listenter,new TypeToken<List<ReserveEntity>>(){}.getType(),true);
     }
 
     /**

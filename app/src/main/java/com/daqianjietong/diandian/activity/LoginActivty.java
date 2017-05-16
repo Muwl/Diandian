@@ -3,11 +3,14 @@ package com.daqianjietong.diandian.activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daqianjietong.diandian.App;
 import com.daqianjietong.diandian.R;
 import com.daqianjietong.diandian.base.BaseActivity;
 import com.daqianjietong.diandian.model.UserInfoBean;
@@ -35,6 +38,21 @@ public class LoginActivty extends BaseActivity {
     TextView loginRegister;
     @BindView(R.id.login_forgetpwd)
     TextView loginForgetpwd;
+
+    private boolean canExit = false;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 0:
+                    canExit = false;
+                    break;
+                default:
+                    break;
+            }
+
+        };
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,5 +117,19 @@ public class LoginActivty extends BaseActivity {
                 ToastUtil.show(error);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (ToosUtils.isApplicationBroughtToBackground(this)) {
+            if (canExit) {
+                finish();
+                App.getmApp().exit();
+            } else {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                canExit = true;
+                handler.sendEmptyMessageDelayed(0, 2000);
+            }
+        }
     }
 }

@@ -78,7 +78,7 @@ public class TimeUtils {
 		int zofen= (int) (cha/60);
 		int fen=zofen%60;
 		int hour=((int)(zofen/60))%24;
-		int day=((int)(zofen/60)/60)/24;
+		int day=((int)(zofen/60))/24;
 		return day+"天"+hour+"时"+fen+"分";
 	}
 

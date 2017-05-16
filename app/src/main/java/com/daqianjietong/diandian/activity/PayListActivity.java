@@ -13,6 +13,7 @@ import com.daqianjietong.diandian.base.BaseActivity;
 import com.daqianjietong.diandian.dialog.CustomeDialog;
 import com.daqianjietong.diandian.model.PartEntity;
 import com.daqianjietong.diandian.model.PayListEntity;
+import com.daqianjietong.diandian.model.ReserveEntity;
 import com.daqianjietong.diandian.utils.Api;
 import com.daqianjietong.diandian.utils.HttpUtil;
 import com.daqianjietong.diandian.utils.SpUtil;
@@ -35,13 +36,15 @@ public class PayListActivity extends BaseActivity {
     @BindView(R.id.paylist_list)
     ListView paylistList;
     private PayListAdapter adapter;
-    private List<PayListEntity> entities=new ArrayList<>();
+    private List<ReserveEntity> entities=new ArrayList<>();
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
+                    int poi=msg.arg1;
                     Intent intent=new Intent(PayListActivity.this,PayActivity.class);
+                    intent.putExtra("reserve",entities.get(poi));
                     startActivity(intent);
                     break;
                 case CustomeDialog.RET_OK:
@@ -75,13 +78,13 @@ public class PayListActivity extends BaseActivity {
 
     private void parkingIndex(){
         showDialog();
-        Api.getInstance().paylist(SpUtil.getUid(),new HttpUtil.URLListenter<List<PayListEntity>>() {
+        Api.getInstance().paylist(SpUtil.getUid(),new HttpUtil.URLListenter<List<ReserveEntity>>() {
             @Override
-            public void onsucess(List<PayListEntity> payListEntities) throws Exception {
+            public void onsucess(List<ReserveEntity> payListEntities) throws Exception {
                 dissDialog();
                 if (entities!=null){
-                    for (PayListEntity payListEntity:payListEntities){
-                        entities.add(payListEntity);
+                    for (ReserveEntity reserveEntity:payListEntities){
+                        entities.add(reserveEntity);
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -97,7 +100,7 @@ public class PayListActivity extends BaseActivity {
 
     private void unsetReserve(final int position){
         showDialog();
-        Api.getInstance().unsetReserve(entities.get(position).r_id,new HttpUtil.URLListenter<String>() {
+        Api.getInstance().unsetReserve(entities.get(position).reserveid,new HttpUtil.URLListenter<String>() {
             @Override
             public void onsucess(String string) throws Exception {
                 dissDialog();
